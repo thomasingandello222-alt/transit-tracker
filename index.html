@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#01696f" />
+  <title>Mobile Transit Tracker</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=boska@500,700&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+  <style>
+    :root, [data-theme="light"] { --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem); --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem); --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem); --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem); --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-border: #d4d1ca; --color-text: #28251d; --color-text-muted: #6f6d68; --color-text-faint: #9d9a93; --color-text-inverse: #f9f8f4; --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-highlight: #cedcd8; --color-warning: #964219; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px; --shadow-sm: 0 1px 2px rgba(40,37,29,0.06); --shadow-md: 0 8px 24px rgba(40,37,29,0.08); --font-display: 'Boska', Georgia, serif; --font-body: 'Satoshi', Inter, sans-serif; --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+    [data-theme="dark"] { --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d; --color-border: #393836; --color-text: #cdccca; --color-text-muted: #a7a49d; --color-text-faint: #797876; --color-text-inverse: #171614; --color-primary: #4f98a3; --color-primary-hover: #227f8b; --color-primary-highlight: #313b3b; --color-warning: #bb653b; --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow-md: 0 12px 32px rgba(0,0,0,0.35); }
+    *,*::before,*::after{box-sizing:border-box} html{-webkit-text-size-adjust:none;text-size-adjust:none} body{margin:0;min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:linear-gradient(180deg,var(--color-bg),var(--color-surface))} button{font:inherit} .app{max-width:760px;margin:0 auto;padding:calc(env(safe-area-inset-top) + var(--space-4)) var(--space-4) calc(env(safe-area-inset-bottom) + var(--space-8))} .header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);margin-bottom:var(--space-6)} .brand{display:flex;align-items:center;gap:var(--space-3)} .logo{width:44px;height:44px;border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--color-primary-highlight),var(--color-surface-2));display:grid;place-items:center;box-shadow:var(--shadow-sm);color:var(--color-primary)} .brand-copy h1{margin:0;font-family:var(--font-display);font-size:var(--text-xl);line-height:1} .brand-copy p{margin:0;color:var(--color-text-muted);font-size:var(--text-sm)} .icon-btn{min-width:44px;min-height:44px;border:1px solid rgba(40,37,29,0.12);border-radius:var(--radius-full);background:var(--color-surface-2);color:var(--color-text);display:grid;place-items:center;box-shadow:var(--shadow-sm)} .hero,.card{background:color-mix(in srgb,var(--color-surface) 88%,transparent);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-md)} .hero{padding:var(--space-5);margin-bottom:var(--space-5)} .hero h2,.section-title{margin:0 0 var(--space-2);font-size:var(--text-lg)} .hero p,.muted,.status,.empty{color:var(--color-text-muted)} .toolbar{display:grid;grid-template-columns:1fr;gap:var(--space-3);margin-top:var(--space-4)} .btn{min-height:48px;border:0;border-radius:var(--radius-full);padding:0 var(--space-4);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);font-weight:700} .btn-primary{background:var(--color-primary);color:var(--color-text-inverse)} .btn-secondary{background:var(--color-surface-2);color:var(--color-text);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)} .meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-4)} .pill{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--space-3);border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-text);font-size:var(--text-xs);font-weight:700} .grid{display:grid;gap:var(--space-4)} .card{padding:var(--space-4)} .planets{display:grid;gap:var(--space-3)} .planet-row,.aspect-row{display:grid;grid-template-columns:1.2fr .9fr .8fr;gap:var(--space-2);align-items:center;padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg)} .aspect-row{grid-template-columns:1fr auto auto} .planet-name{font-weight:700} .rx{color:var(--color-warning);font-weight:700} .script{white-space:pre-wrap;font-size:var(--text-sm)} .footer-note{margin-top:var(--space-5);color:var(--color-text-faint);font-size:var(--text-xs);text-align:center} @media(min-width:700px){.toolbar{grid-template-columns:1fr auto auto}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 4v16M4 12h16"></path><path d="M6.5 6.5c3.4 1.5 7.6 1.5 11 0"></path><path d="M6.5 17.5c3.4-1.5 7.6-1.5 11 0"></path></svg></div>
+        <div class="brand-copy"><h1>Transit Tracker</h1><p>Phone-ready live astrology transits.</p></div>
+      </div>
+      <button class="icon-btn" id="themeToggle" aria-label="Switch color theme" type="button"><span id="themeIcon">☾</span></button>
+    </header>
+    <main class="grid">
+      <section class="hero">
+        <h2>Real planetary positions, no API needed.</h2>
+        <p>This runs fully in your browser using an astronomy calculation library, so it works on your phone without an API key or backend.</p>
+        <div class="toolbar">
+          <button class="btn btn-primary" id="refreshBtn" type="button">Refresh transits</button>
+          <button class="btn btn-secondary" id="copyBtn" type="button">Copy script</button>
+          <button class="btn btn-secondary" id="shareBtn" type="button">Share</button>
+        </div>
+        <div class="meta"><span class="pill" id="timestampPill">Waiting to calculate…</span><span class="pill" id="moonPill">Moon: --</span></div>
+      </section>
+      <section class="card"><h2 class="section-title">Current planets</h2><p class="muted">Longitudes are tropical zodiac degrees from 0° Aries through 29° Pisces.</p><div id="planetList" class="planets" aria-live="polite"></div></section>
+      <section class="card"><h2 class="section-title">Major aspects</h2><p class="muted">Showing conjunction, sextile, square, trine, and opposition within a 1.5° orb.</p><div id="aspectList" class="grid" aria-live="polite"></div></section>
+      <section class="card"><h2 class="section-title">Content script</h2><p class="muted">Short social-ready reading based on the strongest live transits.</p><div id="scriptBox" class="script">Calculating…</div></section>
+      <section class="card"><h2 class="section-title">Status</h2><div id="statusBox" class="status">Loading astronomy engine…</div></section>
+    </main>
+    <p class="footer-note">Tip: Open this page on iPhone or Android and add it to your home screen for app-like use.</p>
+  </div>
+  <script>
+    const PLANETS=[['Sun','Sun'],['Moon','Moon'],['Mercury','Mercury'],['Venus','Venus'],['Mars','Mars'],['Jupiter','Jupiter'],['Saturn','Saturn'],['Uranus','Uranus'],['Neptune','Neptune'],['Pluto','Pluto']];
+    const SIGNS=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+    const ASPECTS=[{name:'Conjunction',angle:0},{name:'Sextile',angle:60},{name:'Square',angle:90},{name:'Trine',angle:120},{name:'Opposition',angle:180}];
+    const els={planetList:document.getElementById('planetList'),aspectList:document.getElementById('aspectList'),scriptBox:document.getElementById('scriptBox'),statusBox:document.getElementById('statusBox'),timestampPill:document.getElementById('timestampPill'),moonPill:document.getElementById('moonPill'),refreshBtn:document.getElementById('refreshBtn'),copyBtn:document.getElementById('copyBtn'),shareBtn:document.getElementById('shareBtn'),themeToggle:document.getElementById('themeToggle'),themeIcon:document.getElementById('themeIcon')};
+    function setTheme(next){document.documentElement.setAttribute('data-theme',next);els.themeIcon.textContent=next==='dark'?'☀':'☾'}
+    setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    els.themeToggle.addEventListener('click',()=>{const current=document.documentElement.getAttribute('data-theme')||'light';setTheme(current==='dark'?'light':'dark')});
+    const normalize360=deg=>((deg%360)+360)%360;
+    function longitudeToSign(deg){const normalized=normalize360(deg);const signIndex=Math.floor(normalized/30);return{sign:SIGNS[signIndex],degree:normalized%30}}
+    const formatDegree=num=>`${num.toFixed(2)}°`;
+    function shortestAngle(a,b){let diff=Math.abs(a-b)%360;return diff>180?360-diff:diff}
+    function eclipticLongitude(body,date){const equ=Astronomy.Equator(body,date,undefined,true,true);const ecl=Astronomy.Ecliptic(equ);return normalize360(ecl.elon)}
+    function retrogradeFlag(body,date){const d1=new Date(date.getTime()-12*3600*1000),d2=new Date(date.getTime()+12*3600*1000);const lon1=eclipticLongitude(body,d1),lon2=eclipticLongitude(body,d2);let delta=lon2-lon1;if(delta>180)delta-=360;if(delta<-180)delta+=360;return delta<0}
+    function calculateAspects(planets){const found=[];for(let i=0;i<planets.length;i++){for(let j=i+1;j<planets.length;j++){const p1=planets[i],p2=planets[j],sep=shortestAngle(p1.longitude,p2.longitude);for(const aspect of ASPECTS){const orb=Math.abs(sep-aspect.angle);if(orb<=1.5)found.push({planet1:p1.name,planet2:p2.name,aspect:aspect.name,orb})}}}return found.sort((a,b)=>a.orb-b.orb)}
+    function generateScript(planets,aspects){const lines=[];const sun=planets.find(p=>p.name==='Sun');const moon=planets.find(p=>p.name==='Moon');if(sun&&moon)lines.push(`Right now the Sun is in ${sun.sign} and the Moon is in ${moon.sign}, so the collective mood is shifting fast.`);aspects.slice(0,3).forEach(asp=>lines.push(`${asp.planet1} ${asp.aspect.toLowerCase()} ${asp.planet2} with a ${asp.orb.toFixed(2)}° orb, so that energy is especially loud today.`));const retrogrades=planets.filter(p=>p.retrograde).map(p=>p.name);if(retrogrades.length)lines.push(`Retrograde check: ${retrogrades.join(', ')} ${retrogrades.length===1?'is':'are'} asking for review, not force.`);lines.push('Drop your sign below and I can turn this into a sign-by-sign reading.');return lines.join(' ')}
+    function renderPlanets(planets){els.planetList.innerHTML=planets.map(p=>`<div class="planet-row"><div><div class="planet-name">${p.name}</div><div class="muted">${p.sign}</div></div><div>${formatDegree(p.degree)}</div><div class="${p.retrograde?'rx':'muted'}">${p.retrograde?'Rx':'Direct'}</div></div>`).join('')}
+    function renderAspects(aspects){if(!aspects.length){els.aspectList.innerHTML='<div class="empty">No major aspects found inside a 1.5° orb right now.</div>';return}els.aspectList.innerHTML=aspects.map(a=>`<div class="aspect-row"><div><strong>${a.planet1}</strong> ${a.aspect} <strong>${a.planet2}</strong></div><div>${a.orb.toFixed(2)}° orb</div><div class="muted">Active</div></div>`).join('')}
+    async function calculateTransits(){if(!window.Astronomy){els.statusBox.textContent='Astronomy library is still loading. Try again in a second.';return}els.statusBox.textContent='Calculating live planetary positions…';try{const now=new Date();const planets=PLANETS.map(([name,body])=>{const longitude=eclipticLongitude(body,now);const {sign,degree}=longitudeToSign(longitude);return{name,sign,degree,longitude,retrograde:body==='Sun'||body==='Moon'?false:retrogradeFlag(body,now)}});const aspects=calculateAspects(planets);const script=generateScript(planets,aspects);renderPlanets(planets);renderAspects(aspects);els.scriptBox.textContent=script;els.timestampPill.textContent=`Updated ${now.toLocaleString()}`;const moon=planets.find(p=>p.name==='Moon');els.moonPill.textContent=moon?`Moon: ${moon.sign} ${formatDegree(moon.degree)}`:'Moon: --';els.statusBox.textContent=`Loaded ${planets.length} planets and ${aspects.length} exact major aspects.`}catch(error){els.statusBox.textContent=`Calculation error: ${error.message}`}}
+    els.refreshBtn.addEventListener('click',calculateTransits);
+    els.copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(els.scriptBox.textContent);els.statusBox.textContent='Script copied to clipboard.'}catch{els.statusBox.textContent='Clipboard copy failed on this browser.'}});
+    els.shareBtn.addEventListener('click',async()=>{const text=els.scriptBox.textContent;if(navigator.share){try{await navigator.share({title:'Transit Tracker',text});els.statusBox.textContent='Shared successfully.'}catch{els.statusBox.textContent='Share cancelled.'}}else{els.statusBox.textContent='Native share is not available in this browser.'}});
+    window.addEventListener('load',()=>setTimeout(calculateTransits,300));
+  </script>
+</body>
+</html>
